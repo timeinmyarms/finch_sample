@@ -15,14 +15,16 @@ libraryDependencies ++= Seq(
   "com.github.finagle" %% "finch-core" % finchVersion,
   "com.github.finagle" %% "finch-circe" % finchVersion,
   "io.circe" %% "circe-generic" % circeVersion,
-  //"com.github.finagle" %% "finch-jackson" % finchVersion,
   "joda-time" % "joda-time" % jodaTimeVersion,
   "com.typesafe.slick" %% "slick" % slickVersion,
+  "com.typesafe.slick" %% "slick-hikaricp" % slickVersion,
   "org.slf4j" % "slf4j-nop" % slf4jVersion,
   "org.postgresql" % "postgresql" % postgreDriverVersion,
   "org.scalaz" %% "scalaz-core" % scalazVersion
 )
+
 scalaSource in Compile := baseDirectory.value / "app"
+unmanagedClasspath in Runtime += baseDirectory.value / "conf"
 
 // ******************** RESOLVERS *****************
 
