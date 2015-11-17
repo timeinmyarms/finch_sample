@@ -1,4 +1,4 @@
-package com.ok.service.core
+package com.ok.services.core
 
 /**
  * Created by olga.krekhovetska on 09.11.2015.

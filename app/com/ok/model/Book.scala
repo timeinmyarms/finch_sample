@@ -1,6 +1,6 @@
 package com.ok.model
 
-import com.ok.service.BookServiceHelper.CreateBookRequest
+import com.ok.services.BookServiceHelper.CreateBookRequest
 import io.circe.Json._
 import io.circe.{Decoder, Encoder, Json}
 

@@ -1,13 +1,13 @@
-package com.ok.service.impl
+package com.ok.services.impl
 
 import com.ok.model.{Book, BookHelper}
 import com.ok.persistence.{Tables, PersistenceErrors, DBConfig}
 import DBConfig.db
 import Tables.{books, users}
 import PersistenceErrors._
-import com.ok.service.BookService
-import com.ok.service.BookServiceHelper.CreateBookRequest
-import com.ok.service.core.ServiceErrorReponses
+import com.ok.services.BookService
+import com.ok.services.BookServiceHelper.CreateBookRequest
+import com.ok.services.core.ServiceErrorReponses
 import ServiceErrorReponses.{EntityNotFound, OptimisticLock, ServiceErrorResponse}
 import com.twitter.util.{Future => TFuture}
 import slick.driver.PostgresDriver.api._

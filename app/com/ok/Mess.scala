@@ -1,7 +1,7 @@
 package com.ok
 
-import com.ok.service.UserServiceHelper.CreateUserRequest
-import com.ok.service.core.ServiceErrorReponses.ServiceErrorResponse
+import com.ok.services.UserServiceHelper.CreateUserRequest
+import com.ok.services.core.ServiceErrorReponses.ServiceErrorResponse
 import io.finch.request._
 import slick.dbio.DBIO
 

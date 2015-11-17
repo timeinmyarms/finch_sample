@@ -1,10 +1,10 @@
-package com.ok.view.controllers
+package com.ok.views.controllers
 
 import com.ok.model.Book
-import com.ok.service.BookServiceHelper.{CreateBookRequest, OrderBookRequest}
-import com.ok.service.core.ServiceErrorReponses.ServiceErrorResponse
-import com.ok.service.impl.BookServiceImpl
-import com.ok.view.ResultHelper
+import com.ok.services.BookServiceHelper.{CreateBookRequest, OrderBookRequest}
+import com.ok.services.core.ServiceErrorReponses.ServiceErrorResponse
+import com.ok.services.impl.BookServiceImpl
+import com.ok.views.utils.ResultHelper
 import com.twitter.util.{Future => TFuture}
 import io.finch.request._
 import io.finch.{Endpoint, _}
@@ -18,7 +18,7 @@ import scalaz.EitherT
 object BookController extends ResultHelper {
 
   import bookRouters._
-  import com.ok.view.form.BookForm._
+  import com.ok.views.forms.BookForm._
   import io.finch.circe._
 
   lazy val routers = createBook :+: orderBook :+: getBook :+: deleteBook :+: getAll

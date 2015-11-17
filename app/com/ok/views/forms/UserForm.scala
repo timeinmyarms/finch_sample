@@ -1,6 +1,6 @@
-package com.ok.view.form
+package com.ok.views.forms
 
-import com.ok.service.UserServiceHelper.CreateUserRequest
+import com.ok.services.UserServiceHelper.CreateUserRequest
 import io.finch.circe._
 import io.finch.request._
 import io.finch._

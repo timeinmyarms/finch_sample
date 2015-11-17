@@ -1,4 +1,4 @@
-package com.ok.view.core
+package com.ok.views.utils
 
 import com.twitter.finagle.http.{Request, Response}
 import com.twitter.finagle.{Service, SimpleFilter}

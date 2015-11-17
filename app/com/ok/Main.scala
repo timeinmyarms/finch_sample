@@ -1,14 +1,11 @@
-package com.ok.view.core
+package com.ok
 
 import com.ok.persistence.DBSetUp
-import com.ok.view.controllers.{BookController, UserController}
-import com.ok.view.core.Filters.handleRequestValidationErrors
+import com.ok.views.controllers.{BookController, UserController}
+import com.ok.views.utils.Filters.handleRequestValidationErrors
 import com.twitter.finagle.http.{Request, Response}
 import com.twitter.finagle.{Http, Service}
 import com.twitter.util.Await
-import io.finch.circe._
-import io.finch._
-import io.circe.generic.auto._
 
 import scala.concurrent.duration._
 
@@ -18,6 +15,9 @@ import scala.concurrent.duration._
  */
 object Main extends App {
   import scala.concurrent.ExecutionContext.Implicits.global
+  import io.finch.circe._
+  import io.finch._
+  import io.circe.generic.auto._
 
   println("Creating DB schema...")
   scala.concurrent.Await.ready(

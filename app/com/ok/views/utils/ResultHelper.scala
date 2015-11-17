@@ -1,6 +1,6 @@
-package com.ok.view
+package com.ok.views.utils
 
-import com.ok.service.core.ServiceErrorReponses.{EntityNotFound, OptimisticLock, ServiceErrorResponse}
+import com.ok.services.core.ServiceErrorReponses.{EntityNotFound, OptimisticLock, ServiceErrorResponse}
 import com.twitter.util.{Future => TFuture}
 import io.finch._
 

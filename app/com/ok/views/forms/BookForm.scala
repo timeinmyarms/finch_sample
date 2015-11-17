@@ -1,6 +1,6 @@
-package com.ok.view.form
+package com.ok.views.forms
 
-import com.ok.service.BookServiceHelper.{OrderBookRequest, CreateBookRequest, UpdateBookRequest}
+import com.ok.services.BookServiceHelper.{OrderBookRequest, CreateBookRequest, UpdateBookRequest}
 import io.finch.circe._
 import io.finch.request._
 import io.finch._

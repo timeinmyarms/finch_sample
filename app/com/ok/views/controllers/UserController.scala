@@ -1,10 +1,10 @@
-package com.ok.view.controllers
+package com.ok.views.controllers
 
 import com.ok.model.User
-import com.ok.service.UserServiceHelper.{CreateUserRequest, UpdateUserRequest}
-import com.ok.service.core.ServiceErrorReponses.{EntityNotFound, OptimisticLock, ServiceErrorResponse}
-import com.ok.service.impl.UserServiceImpl
-import com.ok.view.ResultHelper
+import com.ok.services.UserServiceHelper.{CreateUserRequest, UpdateUserRequest}
+import com.ok.services.core.ServiceErrorReponses.{EntityNotFound, OptimisticLock, ServiceErrorResponse}
+import com.ok.services.impl.UserServiceImpl
+import com.ok.views.utils.ResultHelper
 import com.twitter.util.{Future => TFuture}
 import io.finch._
 
@@ -14,7 +14,7 @@ import scalaz._
  */
 object UserController extends ResultHelper {
 
-  import com.ok.view.form.UserForm._
+  import com.ok.views.forms.UserForm._
   //NOTE: use import com.ok.model.UserHelper.userEncoder for specific json representation
   import userRouters._
 

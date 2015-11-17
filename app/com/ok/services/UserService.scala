@@ -1,7 +1,7 @@
-package com.ok.service
+package com.ok.services
 
 import _root_.com.ok.model.User
-import com.ok.service.core.ServiceErrorReponses
+import com.ok.services.core.ServiceErrorReponses
 import ServiceErrorReponses.{ServiceErrorResponse, EntityNotFound, OptimisticLock}
 import com.twitter.util.{Future => TFuture}
 
