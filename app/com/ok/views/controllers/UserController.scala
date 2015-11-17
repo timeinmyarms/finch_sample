@@ -1,9 +1,9 @@
 package com.ok.views.controllers
 
-import com.ok.model.User
+import com.ok.bind.UserServiceModule
+import com.ok.model.{User, Book}
 import com.ok.services.UserServiceHelper.{CreateUserRequest, UpdateUserRequest}
-import com.ok.services.core.ServiceErrorReponses.{EntityNotFound, OptimisticLock, ServiceErrorResponse}
-import com.ok.services.impl.UserServiceImpl
+import com.ok.services.core.ServiceErrorReponses.ServiceErrorResponse
 import com.ok.views.utils.ResultHelper
 import com.twitter.util.{Future => TFuture}
 import io.finch._
@@ -12,7 +12,7 @@ import scalaz._
 /**
  * Created by olga.krekhovetska on 05.11.2015.
  */
-object UserController extends ResultHelper {
+object UserController extends ResultHelper with UserServiceModule {
 
   import com.ok.views.forms.UserForm._
   //NOTE: use import com.ok.model.UserHelper.userEncoder for specific json representation
@@ -26,8 +26,6 @@ object UserController extends ResultHelper {
     lazy val deleteUserR = put(userRoutersRoot / long("id") ? deleteUserForm)
     lazy val getAllUsersR = get(userRoutersRoot)
   }
-
-  lazy val userService = new UserServiceImpl
 
   lazy val routers = createUser :+: getUser :+: updateUser :+: deleteUser :+: findAll
 

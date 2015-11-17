@@ -22,6 +22,7 @@ import scalaz.syntax.std.option._
  * Created by olga.krekhovetska on 09.11.2015.
  */
 class BookServiceImpl extends BookService {
+
   import com.ok.utils.TwitterConverters._
   import scala.concurrent.ExecutionContext.Implicits.global
 

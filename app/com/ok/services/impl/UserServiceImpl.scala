@@ -37,7 +37,7 @@ class UserServiceImpl extends UserService {
   }
 
   override def update(req: UpdateUserRequest): TFuture[ServiceErrorResponse \/ User] = {
-    val actions = for{
+    val actions = for {
       userOpt <- users.findById(req.id)
       user <- userOpt match {
         case Some(u) => DBIO.successful(u)
@@ -45,7 +45,7 @@ class UserServiceImpl extends UserService {
       }
       userToUpdate = user.copy(firstName = req.firstName, lastName = req.lastName, yearsOld = req.age, version = req.version + 1)
       updatedCount <- users.update(userToUpdate, req.version)
-      _ <- if(updatedCount == 1) DBIO.successful(updatedCount) else DBIO.failed(OptimisticLockExcp("User was modified."))
+      _ <- if (updatedCount == 1) DBIO.successful(updatedCount) else DBIO.failed(OptimisticLockExcp("User was modified."))
     } yield userToUpdate
 
     val updateResult: Future[ServiceErrorResponse \/ User] = db.run(actions.transactionally).map(_.right).recover {
@@ -59,14 +59,14 @@ class UserServiceImpl extends UserService {
     for {
       userOpt <- db.run(users.findById(id))
     } yield {
-        userOpt \/> EntityNotFound("User is not found.")
-      }
+      userOpt \/> EntityNotFound("User is not found.")
+    }
   }
 
   override def delete(id: Long, version: Int): TFuture[OptimisticLock \/ Unit] = {
-   for{
+    for {
       deletedCount <- db.run(users.delete(id, version))
-    } yield{
+    } yield {
       (deletedCount == 1) either (()) or OptimisticLock("User was modified.")
     }
   }
