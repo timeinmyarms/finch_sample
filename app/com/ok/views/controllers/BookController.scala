@@ -8,6 +8,7 @@ import com.ok.views.utils.ResultHelper
 import com.twitter.util.{Future => TFuture}
 import io.finch.request._
 import io.finch.{Endpoint, _}
+import org.slf4j.LoggerFactory
 
 import scalaz.EitherT
 
@@ -21,18 +22,26 @@ object BookController extends ResultHelper with BookServiceModule {
   import com.ok.views.forms.BookForm._
   import io.finch.circe._
 
+  val logger = LoggerFactory.getLogger(this.getClass)
+
   lazy val routers = createBook :+: orderBook :+: getBook :+: deleteBook :+: getAll
 
   def createBook: Endpoint[Book] = createBookR { (req: CreateBookRequest) =>
     for{
       createdBook <- bookService.create(req)
-    } yield Created(createdBook)
+    } yield {
+      logger.info(s"Book was created, bookID=${createdBook.id}")
+      Created(createdBook)
+    }
   }
 
   def orderBook: Endpoint[Book] = orderBookR { (bookId: Long, req: OrderBookRequest) =>
     val result = for{
       updatedBook <- EitherT[TFuture, ServiceErrorResponse, Book](bookService.order(bookId, req.ownerId, req.version))
-    } yield Ok(updatedBook)
+    } yield {
+      logger.info(s"Book was updated, bookID=${updatedBook.id}")
+      Ok(updatedBook)
+    }
     processResult(result)
   }
 
@@ -46,12 +55,14 @@ object BookController extends ResultHelper with BookServiceModule {
   def deleteBook: Endpoint[Unit] = deleteBookR {(bookId: Long, version: Int) =>
     val result = for {
       _ <- EitherT[TFuture, ServiceErrorResponse, Unit](bookService.delete(bookId, version))
-    } yield Ok
+    } yield {
+      logger.info(s"Book was deleted, bookID=$bookId")
+      Ok
+    }
     processResult(result)
   }
 
   def getAll: Endpoint[Seq[Book]] = getAllBookR {(userId: Option[Long]) =>
-    println(s"userID: $userId")
       Ok(bookService.findAll(userId))
   }
 

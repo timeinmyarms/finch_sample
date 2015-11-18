@@ -10,6 +10,7 @@ import com.ok.services.UserServiceHelper.{CreateUserRequest, UpdateUserRequest}
 import com.ok.services.core.ServiceErrorReponses
 import ServiceErrorReponses.{EntityNotFound, ServiceErrorResponse, OptimisticLock}
 import com.twitter.util.{Future => TFuture}
+import org.slf4j.LoggerFactory
 import slick.driver.PostgresDriver.api._
 
 
@@ -26,6 +27,8 @@ class UserServiceImpl extends UserService {
   import scala.concurrent.ExecutionContext.Implicits.global
   //convert scala.concurrent.Future  to com.twitter.util.Future
   import com.ok.utils.TwitterConverters._
+
+  val logger = LoggerFactory.getLogger(this.getClass)
 
   override def create(req: CreateUserRequest): TFuture[User] = {
     val user = User(0, req.firstName, req.lastName, req.age, 0)
@@ -49,7 +52,9 @@ class UserServiceImpl extends UserService {
     } yield userToUpdate
 
     val updateResult: Future[ServiceErrorResponse \/ User] = db.run(actions.transactionally).map(_.right).recover {
-      case OptimisticLockExcp(msg) => OptimisticLock(msg).left
+      case OptimisticLockExcp(msg) =>
+        logger.warn(s"User update: optimistic lock, userID=${req.id}")
+        OptimisticLock(msg).left
       case NotFoundExcp(msg) => EntityNotFound(msg).left
     }
     updateResult
@@ -67,7 +72,11 @@ class UserServiceImpl extends UserService {
     for {
       deletedCount <- db.run(users.delete(id, version))
     } yield {
-      (deletedCount == 1) either (()) or OptimisticLock("User was modified.")
+      (deletedCount == 1) either (()) or {
+        logger.warn(s"User deletion: optimistic lock, userID=$id")
+        OptimisticLock("User was modified.")
+      }
+
     }
   }
 

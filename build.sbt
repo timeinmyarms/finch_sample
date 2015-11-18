@@ -10,6 +10,7 @@ val slf4jVersion = "1.7.12"
 val postgreDriverVersion = "9.4-1201-jdbc41"
 val scalazVersion = "7.1.5"
 val circeVersion = "0.2.0"
+val logbackVesion = "1.1.3"
 
 libraryDependencies ++= Seq(
   "com.github.finagle" %% "finch-core" % finchVersion,
@@ -18,9 +19,9 @@ libraryDependencies ++= Seq(
   "joda-time" % "joda-time" % jodaTimeVersion,
   "com.typesafe.slick" %% "slick" % slickVersion,
   "com.typesafe.slick" %% "slick-hikaricp" % slickVersion,
-  "org.slf4j" % "slf4j-nop" % slf4jVersion,
   "org.postgresql" % "postgresql" % postgreDriverVersion,
-  "org.scalaz" %% "scalaz-core" % scalazVersion
+  "org.scalaz" %% "scalaz-core" % scalazVersion,
+  "ch.qos.logback" % "logback-classic" % logbackVesion
 )
 
 scalaSource in Compile := baseDirectory.value / "app"

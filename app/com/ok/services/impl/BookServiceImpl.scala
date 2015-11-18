@@ -10,6 +10,7 @@ import com.ok.services.BookServiceHelper.CreateBookRequest
 import com.ok.services.core.ServiceErrorReponses
 import ServiceErrorReponses.{EntityNotFound, OptimisticLock, ServiceErrorResponse}
 import com.twitter.util.{Future => TFuture}
+import org.slf4j.LoggerFactory
 import slick.driver.PostgresDriver.api._
 
 import scala.concurrent.Future
@@ -25,6 +26,8 @@ class BookServiceImpl extends BookService {
 
   import com.ok.utils.TwitterConverters._
   import scala.concurrent.ExecutionContext.Implicits.global
+
+  val logger = LoggerFactory.getLogger(this.getClass)
 
   override def create(req: CreateBookRequest): TFuture[Book] = {
     val bookToCreate = BookHelper.toBook(req)
@@ -51,7 +54,9 @@ class BookServiceImpl extends BookService {
     } yield bookToUpdate)
 
     val updateResult: Future[ServiceErrorResponse \/ Book] = db.run(actions.transactionally).map(_.right).recover {
-      case OptimisticLockExcp(msg) => OptimisticLock(msg).left
+      case OptimisticLockExcp(msg) =>
+        logger.warn(s"Book update: optimistic lock, bookID=$bookId")
+        OptimisticLock(msg).left
       case NotFoundExcp(msg) => EntityNotFound(msg).left
     }
     updateResult
@@ -66,7 +71,10 @@ class BookServiceImpl extends BookService {
     for {
       deletedCount <- db.run(books.delete(bookId, version))
     } yield {
-      (deletedCount == 1) either (()) or OptimisticLock("Book was modified.")
+      (deletedCount == 1) either (()) or {
+        logger.warn(s"Book deletion: optimistic lock, bookID=$bookId")
+        OptimisticLock("Book was modified.")
+      }
     }
   }
 
